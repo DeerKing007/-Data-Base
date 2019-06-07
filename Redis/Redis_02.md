@@ -61,7 +61,7 @@ Redis 在3.0版本前只支持单实例模式，虽然支持主从模式部署�
 ./redis-trib.rb create --replicas 1 192.168.134.124:7001 192.168.134.124:7002 192.168.134.124:7003 192.168.134.124:7004 192.168.134.124:7005 192.168.134.124:7006 
 ```
 
-![集群搭建过程](E:\Python Web\Python-Web-Lee\08 Redis\Redis-pic\集群搭建过程.gif)
+![集群搭建过程](https://github.com/DeerKing007/Data-Base/blob/master/Redis/Redis-pic/集群搭建过程.gif)
 
 `--replicas 1` 表示主从复制比例为 1:1，即一个主节点对应一个从节点；然后，默认给我们分配好了每个主节点和对应从节点服务，以及 slot 的大小，因为在 Redis 集群中有且仅有 16383 个 slot ，默认情况会给我们平均分配，当然你可以指定，后续的增减节点也可以重新分配。 
 
@@ -77,7 +77,7 @@ Redis 在3.0版本前只支持单实例模式，虽然支持主从模式部署�
 
 - 存/取值时 ，redis会根据key，计算一个介于  0 – 16383之间的数字，此数字即为当前数据的槽位置，通过槽位置，决定哪个redis主服务器来负责本次访问
 
-![1534788385982](E:\Python Web\Python-Web-Lee\08 Redis\Redis-pic\1534788385982.png)
+![1534788385982](https://github.com/DeerKing007/Data-Base/blob/master/Redis/Redis-pic/1534788385982.png)
 
 Redis 集群会把数据存在一个master节点，然后在这个master和其对应的slave之间进行数据同步。当读取数据时，也根据一致性哈希算法到对应的master节点获取数据。只有当一个master 挂掉之后，才会启动一个对应的salve节点，充当master。
 
