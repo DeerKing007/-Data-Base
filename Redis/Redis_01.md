@@ -290,7 +290,7 @@ rdbcompression yes                #是否压缩快照文件
 - 父进程继续处理client请求，子进程负责将快照(数据副本)写入临时文件(默认文件名为dump.rdb)
 - 子进程写完后，用临时文件替换原来的快照文件，然后子进程退出。
 
-![img](Redis-pic\388326-20170726161552843-904424952.png) 
+![img](https://github.com/DeerKing007/Data-Base/blob/master/Redis/Redis-pic/388326-20170726161552843-904424952.png) 
 
 ##### 2.3 RDB触发方式
 
