@@ -402,7 +402,7 @@ select age,dept_id from t_employee group by dept_id,age;
 
 **注意：分组查询中除了组函数外，只能查询分组条件的字段**
 
-![group_liucheng](.\Mysql-notes-pic\group_liucheng.png)
+![group_liucheng](https://github.com/DeerKing007/Data-Base/blob/master/Mysql/Mysql-notes-pic/group_liucheng.png)
 
 #### 8、having子句：分组限制
 
