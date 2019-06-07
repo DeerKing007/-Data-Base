@@ -53,7 +53,7 @@ select  t1.*,t2.title from t_employee as t1 inner join t_department as t2 on t1.
 
 - on条件满足后，主从双方将自己对应的行，放入最终的大表中
 
-  ![table_join](Mysql-notes-pic\table_join.png)
+  ![table_join](https://github.com/DeerKing007/Data-Base/blob/master/Mysql/Mysql-notes-pic/table_join.png)
 
 
 
