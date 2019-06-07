@@ -1,0 +1,383 @@
+﻿----------------Day01-Mysql----------------
+1、概述
+	Mysql是一个关系型数据库：在关系型的数据库中，数据是以二维表的形式存储，表与表之前可以有“一对一”、“一对多”、“多对多的”关系模型
+
+2、Mysql的结构：
+	Mysql是一个大的数据仓库，其中包含各种小库（默认包含mysql、test），在每个小库中包含各种表，而表中包含行和列
+
+3、Mysql的安装
+	（1）download package 下载安装包
+	（2）双击安装： 安装过程中需要更改安装路径（非必需--默认安装在C盘）--
+		选择typical 默认在C盘
+		选择custom  自定义安装
+	（3）勾选设置环境变量 将bin目录添加到系统环境变量中 -- path 
+	    如果不勾选，则在安装完成后，手动添加mysql安装目录下的bin目录到环境变量的path中
+	（4）需要输入root密码
+
+4、安装成功后，检测是否安装成功：mysqladmin --version  (在CMD中能直接使用mysqladmin命令的前提是将bin目录加到环境中了)
+
+
+5、连接mysql server：
+打开CMD窗口来连接 -- mysql -uroot -p123456
+
+6、mysql密码管理:
+	（1）修改密码   mysqladmin -u用户名 -p旧密码 password 新密码
+	（2）忘记密码：
+		a. 关闭mysql服务  -- 任务管理器->服务->mysql  或 通过命令-- net stop mysql
+		b. 在cmd中输入 mysqld --skip-grant-tables 跳过权限
+		c. 再打开一个cmd窗口  输入: mysql 直接进入mysql环境
+		d. 选择mysql库： use mysql
+		e. 更新mysql库中的user表
+			update user set password=password("要更改的密码") where user="root";
+		f. flush privileges; 刷新权限
+
+7、在cmd中退出mysql环境： quit
+
+
+8、数据库管理
+	（1）显示数据库  show databases;
+	（2）创建数据库 create database 库名  charset=utf;
+	（3）删除数据库 drop database 库名;
+	（4）选择数据库 use 库名；
+	（5）查看当前选中的库  select database();
+
+9、简单建表操作
+	（1）显示库中的表  show tables;
+	（2）建表：
+			create table 表名(列名 类型 约束，列名....);
+
+	（3）简单数据类型： int varchar datetime
+	（5）简单约束： primary key 主键 、auto_increment 自动增长 不需要程序员维护、unique 唯一 、not null 非空、null 可空
+
+
+10、SQL查询语句
+	（1）查询所有列的数据  select * from 表名；
+	（2）查询指定列（部分列） select 列名1，列名2... from 表名
+
+11、列操作
+	（1）列运算 【+、-、*、/】  select age+1 from 表名；
+	（2）列拼接  select concat(name,"222") from 表名；
+	（3）列别名  select name as 姓名 from 表名；其中as可省略
+	（4）列去重  select distinct(列名) from 表名；
+
+12、where条件查询
+	（1）【> < >= <= = !=】的使用
+		select * from 表名 where id > 1;
+		select * from 表名 where name = "tom";
+
+	（2）【and 、or】的使用
+		select * from 表名　where id > 2 and age > 20;
+		select * from 表名　where id > 2 or age > 20;
+
+	（3）范围 【in(xx,xx,xx) 、between xx and xxx】
+		select * from 表名 where id in (3,5,7);
+		select * from 表名 where age between 20 and 30;
+
+	（4）空值判断 null 、not null 
+	    select * from 表名 where name is null; 
+	    select * from 表名 where name is not null;  
+	    不可使用name = null 或 name != null;
+
+	（5）模糊查询 like
+		select * from 表名 where name like "%a%";
+
+13、分页查询 limit
+	select * from 表名 limit 0,3 表示从下标为0的行，共查询3条数据
+	select * from 表名 limit (m-1)*n,n 表示查询第m页，每页n条数据
+
+14、排序 order by 【asc 升序、desc 降序】 默认为升序
+	select * from 表名 order by age ;以年龄升序排列
+	select * from 表名 order by age desc; 以年龄降序排列
+	select * from 表名 order by age,name desc; 以年龄升序排列，年龄相同按姓名降序排列
+
+15、组函数：max、min、sum、count、avg
+	select max(age) from 表名; 查询所有数据中年龄最大的值
+	select avg(salary) from 表名; 查询所有用户的平均工资
+
+	select max(age),name from 表名; 结果扭曲
+
+16、分组统计：group by ，会和组函数一起使用
+	select 组函数(列)，分组条件的列 from 表名 group by 分组条件的列
+	
+	select max(salary) from t_employee group by dept_id;
+
+17、hving条件限制
+	select 组函数 from t_employee group by 列名 having avg(salary)>5000;
+
+	和where的区别：where是对所有数据进行限制，而having是对分组后的每组数据限制
+
+18、case子句：
+	case 
+		when 条件 then "结果"
+		...
+	end
+
+19、子查询：查询一张表，但要处理两个业务逻辑时
+    查询工资最高的员工的信息
+
+    select * from t_employee where salary = max(salary);  -- 错误的
+    select * from t_employee where salary = (select max(salary) from t_employee);
+
+
+20、 sql中常用的一些内置函数
+	length(列名)
+	select * from t_user where length(name)>5;
+
+	....
+
+
+
+
+----------------------------我是华丽的分隔线----------------------------
+
+------------------------------Day02 - MySQL ------------------------------
+
+1、表连接：在一次的查询结果中需要得到二个或二个以上的表中的数据，需要使用联合查询
+
+2、表连接的三种方式：
+	（1）内连接 inner join
+	（2）外连接 
+			a.  left outer join
+			b.  right outer join
+	（3）自连接
+			自己连接自己
+
+	内连接和外连接中的inner和outer可以省略
+
+3、基本语法
+	select 
+		表1.*,表2.*
+	from 
+		表1 
+【inner/left outer/right outer】join
+		表2
+	on
+		表1.列 = 表2.列
+
+
+4、内连接和外连接的区别：
+	内连接:结果中没有空数据
+	外连接:主表数据全显示，从表无数据则显示为null
+	t_employee left outer joint t_department 左外连接
+
+
+5、自连接多用于类别表中  id name level parent_id
+
+
+6、数据类型
+	（1）数字类型  tinyint/smallint/int/float/double/decimal ...
+		注意：在做浮点数据计算时，float可能会丢失精度，此时应该用decimal
+		decimal(m,n) 其中m表示 整数+小数的位数，而n表示小数位
+	
+	（2）字符类型 char / varchar / text
+         char表示定长
+         varchar表示变长
+         text存储长文本
+         对于图片，音视频一般存储文件的路径
+	（3）日期和时间类型
+			date、time、datetime、timestamp(1970-2037-12-31 23：59：59)
+
+
+7、表选项 
+	engine=innodb 支持事务   
+	default charset=utf8
+	auto_increment=10000 自增长的起始值
+
+
+8、联合约束：  primary key(xx,xx)  unique(xxx,xxx)
+
+
+9、插入数据
+	insert into 表名（列名1，...）values(值1....);
+
+	insert into 表名 values(所有列的值);
+
+	insert into 表名 (列名1...) values(值1...),(xx),(xxx);
+
+
+10、更新数据 update 表名 set 列名1=新值,列名2=新值 where 条件;
+	一定要加where条件，否则将会更新所有行的数据
+
+
+11、删除数据： delete from 表名 where 条件
+
+
+12、删除表： drop table 表名;
+
+
+
+
+----------------------------我是华丽的分隔线----------------------------
+
+------------------------------Day03 - MySQL ------------------------------
+
+1、外键：当两个表有从属关系时，使用外键来搭建关联关系
+
+2、关系种类：
+	（1）1：1 一对一 
+	（2）1：* 一对多
+	（3）*：* 多对多
+
+3、基本语法：  foreign key(自己的列名) references 对方表名(主键名)
+
+
+4、外键设置在哪个表中： 
+	在从属关系中，设置在从表方
+	一对一 将外键设置在 任何一方都可以
+	一对多 将外键设置在 多的方
+	多对多 需要搭建第三方表  在第三方表中设置两个外键
+
+	create table t_department(
+		id ...
+		title ..
+		note ..
+	);
+
+	create table t_employee(
+		id..
+		name ..
+		age ..
+		salary ..
+		dept_id ..
+		foreign key(dept_id) references t_department(id)
+	);
+
+
+5、外键注意的事项：
+	（1）外键列的类型要和关联的对方表中的主键的类型保持一致
+	（2）外键列的值是对方表中的主键值的子集
+	（3）添加数据时，先添加主表数据，再添加从表数据
+	（4）删除表数据时，先删除从表数据，再删除主表数据
+
+6、事务：一个完整业务逻辑处理，作用：保证在数据处理的过程中，一旦有某个数据操作出错，则全盘回滚数据
+
+7、事务的使用	
+	（1）begin; 开启事务     或者  start transaction;
+	（2）commit; 结束事务    或者手动回滚事务 rollback;
+
+
+8、事务的特性ACID
+	（1）原子性 事务是一个不可分隔的最小单位，事务中的数据处理要么都做，要么都不做
+	（2）一致性 保证数据的一致，数据的逻辑是完整和正确的
+	（3）隔离性 事务与事务之前可以相互隔离
+	（4）持久性 事务一旦提交，数据将持久化存储到数据库中
+
+9、事务的并发问题
+	（1）脏读     一个事务读取其它事务未提交的数据
+	（2）不可重复读 一个事务多次读取数据的过程中，其它事务修改并提交，导致该事务多次读取的结果不一致
+	（3）幻影读   事务A读取同一张表的过程中，事务B增加或删除了表中的数据，导致事务A中出现莫名其妙的额外的数据
+
+	（4）更新丢失
+
+10、隔离级别：
+	（1）read uncommitted 读未提交   不能解决 所有的并发问题
+	（2）read committed 读提交       可以解决脏读
+	（3）repeatable read 可重复读    可以解决脏读和不可重复读
+	（4）serializable 串行化         可以解决所有的并发问题 one by one wait
+
+    默认的隔离级别：repeatable read
+
+
+11、锁和更新丢失
+	更新丢失：两个或多个事务在读取同一行数据时，基于最初选定的值更新该行，后更新的值会覆盖先更新的值
+
+	解决更新丢失：加锁   
+	（1）悲观锁   select xxx from 表 where xx for update
+		事务A：select xxx from 表 where xx for update; 可以查询到结果
+		事务B：select xxx from 表 where xx for update; 需要等待事务A提交才会有结果
+	（2）乐观锁
+		在表中额外添加一列：version
+		select xxx,version from 表 where xxx;
+		update 表名 set 列名=某个值,version=查到的值+1 where xxx=xxx and version=查询的值
+
+
+12、索引：给作为查询条件的列加索引，提交查询效率
+	select xxx from 表名 where age = 18;
+
+	加索引的两种方式：
+	（1）建表时添加   index 索引名 (列名)
+	（2）建表完成后   create index 索引名 on 表名(列名)
+
+
+13、联合索引 有and条件时
+	select xxx from 表名 where 列名1 = xxx and 列名2 = xxx
+	index 索引名 (列名1，列名2)
+
+14、显示/删除索引
+	show index from 列名
+	drop index 索引名 on 表名
+
+15、索引细节：
+	（1）主键、外键、唯一列自动有索引
+	（2）对查询较多的表，可以适当添加索引，提高查询效率
+	（3）对增删改较多的表，不适合添加索引，增删改时也需要对索引进行动态维护
+	（4）索引过多，增加维护时间和存储空间
+
+
+----------------------------我是华丽的分隔线----------------------------
+
+---------------------------Day04 - Pyhon-MySQL --------------------------
+
+1、Python连接Mysql: Python本身没有内置的模块直接操作Mysql，需要借助第三个模块
+
+2、安装Mysqlclient 
+	（1）pip install mysqlclient 联网自动下载并安装
+	安装前需要注意更新pip到最新版本： pip install --upgrade pip
+
+	或（2）下载安装文件 .whl文件    pip install xxx.whl
+
+
+3、Python操作Mysql
+	（1）导入模块 import MySQLdb
+	（2）连接mysql  
+		conn = MySQLdb.connect(host=xxx,port=3306,user=xxx,passwd=xxx,db=xx,charset=utf8)
+	（3）获取游标对象 
+		cursor = conn.cursor(可以cursor的类型为：MySQLdb.cursors.DictCursor)
+	（4）执行SQL指令
+		cursor.execute("sql语句")
+		a. 查询指令
+			rawcount = cursor.execute("查询语句")  # 返回查询到的行
+			如果rawcount > 0:
+				result = cursor.fetchone()/fetchmany(n)/fetchall()
+			如果是fetchone() 返回值是一行数据的touple
+			如果是many和all() 返回值是touple of touple
+		
+		b. 增删改指令
+			rawcount = cursor.execute("增删改语句")  # 返回受影响的行
+			conn.commit() 事务控制
+
+	（5）释放资源
+		cursor.close()
+		conn.close()
+
+4、cursor的类型：
+	cursor = conn.cursor(MySQLdb.cursors.DictCursor)
+   fetch时获取的数据行的类型是字典dict
+
+   for user in reuslt:
+   		user["name"]
+
+
+5、参数传递
+（1）使用字符串拼接
+	name = "tom"
+	sql = "select * from user where name = '%s'"%name 
+
+	但是使用该方式会有sql注入的风险
+
+	如何引发sql注入:
+	name = "xxx"
+	password = "' or '1'='1"
+	sql = "select * from user where name='%s' and password='%s'"%(name,password)
+	
+
+（2）解决SQL注入的风险：
+
+	name = "xxx"
+	password = "' or '1'='1"
+	sql = "select * from user where name=%s and password=%s"
+	cursor.execute(sql,[name,password]) / cursor.execute(sql,(name,password)
+
+	或
+	sql = "select * from user where name=%(name)s and password=%(pwd)s"
+	cursor.execute(sql,{"name":name,"pwd":password})
