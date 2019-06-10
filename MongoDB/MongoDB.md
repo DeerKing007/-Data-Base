@@ -313,3 +313,107 @@ def majiaDB():
     return listuser
 ```
 
+## Django 读取 Mongodb 数据：
+
+#### 安装包
+```
+pip3 install mongoengine
+```
+
+#### 配置 settings
+```
+DATABASES = {
+    'default': {
+        'ENGINE': None,
+    }
+}
+# 连接mongodb数据库
+from mongoengine import connect
+connect('database name',
+        host='127.0.0.1',
+        port=27017
+        # username='',
+        # password=''
+        )
+```
+
+#### 在models.py里创建模型类
+```
+from mongoengine import *
+
+class NewsModel(Document):
+	# 定义数据库中的所有字段
+ 	title = StringField()
+	details = StringField()
+ 	like = StringField()
+	comment = StringField()
+
+	# 指明连接的数据表名
+	meta = {'collection': 'table name'}
+```
+
+
+#### 在views.py里实现增删改查
+```
+from django.shortcuts import render
+
+# Create your views here.
+
+from .models import NewsModel
+
+class CreateView():
+ def __init__:
+     pass
+
+	# 增
+	def post(self, request):
+    	title = request.data.get('title', None)
+    	details = request.data.get('details', None)
+   	 like = request.data.get('like', None)
+    	comment = request.data.get('comment', None)
+
+    	result = NewsModel(title=title, details=details, like=like, comment=comment)
+    	result.save()
+    	return Response({'msg: ok'})
+
+	# 查
+	def get(self, request):
+
+    	id = request.GET.get('id', None)
+
+    	result = NewsModel.objects.filter(id=id).all()
+
+    	serializer = self.get_serializer(result, many=True)
+
+    	return Response(data=serializer.data)
+
+	# 改
+	def put(self, request):
+
+   	 	id = request.data.get('id', None)
+
+    	details = request.data.get('details', None)
+
+    	NewsModel.objects.filter(id=id).update(details=details)
+    
+    return Response({'msg': 'ok'})
+
+	# 删
+ 	def delete(self, request):
+
+    	id = request.GET.get('id', None)
+
+    	NewsModel.objects.filter(id=id).delete()
+
+    	return Response({'msg': 'ok'})
+```
+
+
+
+
+
+
+
+
+
+
