@@ -353,8 +353,7 @@ class NewsModel(Document):
 	# 指明连接的数据表名
 	meta = {'collection': 'table name'}
 	
-![models](https://github.com/DeerKing007/Data-Base_Notes/blob/master/MongoDB/mongodb_pic/models.png)	
-
+![models](https://github.com/DeerKing007/Data-Base_Notes/blob/master/MongoDB/mongodb_pic/models.png)
 ```
 
 
@@ -410,8 +409,7 @@ class CreateView():
         NewsModel.objects.filter(id=id).delete()
 
         return Response({'msg': 'ok'})
-	
-![views](https://github.com/DeerKing007/Data-Base_Notes/blob/master/MongoDB/mongodb_pic/views.png)
+![views](https://github.com/DeerKing007/Data-Base_Notes/blob/master/MongoDB/mongodb_pic/views.png)	
 
 ```
 
