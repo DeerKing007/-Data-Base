@@ -316,12 +316,12 @@ def majiaDB():
 ## Django 读取 Mongodb 数据：
 
 #### 安装包
-```
+```python
 pip3 install mongoengine
 ```
 
 #### 配置 settings
-```
+```python
 DATABASES = {
     'default': {
         'ENGINE': None,
@@ -338,7 +338,7 @@ connect('database name',
 ```
 
 #### 在models.py里创建模型类
-```
+```python
 from mongoengine import *
 
 class NewsModel(Document):
@@ -354,7 +354,7 @@ class NewsModel(Document):
 
 
 #### 在views.py里实现增删改查
-```
+```python
 from django.shortcuts import render
 
 # Create your views here.
@@ -362,53 +362,67 @@ from django.shortcuts import render
 from .models import NewsModel
 
 class CreateView():
- def __init__:
-     pass
+    def __init__:
+        pass
 
-	# 增
-	def post(self, request):
-    	title = request.data.get('title', None)
-    	details = request.data.get('details', None)
-   	 like = request.data.get('like', None)
-    	comment = request.data.get('comment', None)
+    # 增
+    def post(self, request):
+        title = request.data.get('title', None)
+        details = request.data.get('details', None)
+        like = request.data.get('like', None)
+        comment = request.data.get('comment', None)
+        result = NewsModel(title=title, details=details, like=like, comment=comment)
+        result.save()
+        return Response({'msg: ok'})
 
-    	result = NewsModel(title=title, details=details, like=like, comment=comment)
-    	result.save()
-    	return Response({'msg: ok'})
+    # 查
+    def get(self, request):
 
-	# 查
-	def get(self, request):
+        id = request.GET.get('id', None)
 
-    	id = request.GET.get('id', None)
+        result = NewsModel.objects.filter(id=id).all()
 
-    	result = NewsModel.objects.filter(id=id).all()
+        serializer = self.get_serializer(result, many=True)
 
-    	serializer = self.get_serializer(result, many=True)
+        return Response(data=serializer.data)
 
-    	return Response(data=serializer.data)
+    # 改
+    def put(self, request):
 
-	# 改
-	def put(self, request):
+        id = request.data.get('id', None)
 
-   	 	id = request.data.get('id', None)
+        details = request.data.get('details', None)
 
-    	details = request.data.get('details', None)
+        NewsModel.objects.filter(id=id).update(details=details)
 
-    	NewsModel.objects.filter(id=id).update(details=details)
-    
-    return Response({'msg': 'ok'})
+        return Response({'msg': 'ok'})
 
-	# 删
- 	def delete(self, request):
+    # 删
+    def delete(self, request):
 
-    	id = request.GET.get('id', None)
+        id = request.GET.get('id', None)
 
-    	NewsModel.objects.filter(id=id).delete()
+        NewsModel.objects.filter(id=id).delete()
 
-    	return Response({'msg': 'ok'})
+        return Response({'msg': 'ok'})
 ```
 
+#### 去重命令：
 
+```python
+db.userInfo.aggregate([
+	{
+    	$group: { _id: {userName: '$userName',age: '$age'},count: {$sum: 1},dups: {$addToSet: '$_id'}}
+	},
+	{
+    	$match: {count: {$gt: 1}}
+	}
+]).forEach(function(doc){
+	doc.dups.shift();
+	db.userInfo.remove({_id: {$in: doc.dups}});
+})
+
+```
 
 
 
