@@ -336,10 +336,9 @@ connect('database name',
         # password=''
         )
 	
-	
+```
 ### settings配置
 ![settings](https://github.com/DeerKing007/Data-Base_Notes/blob/master/MongoDB/mongodb_pic/settings.png)
-```
 
 #### 在models.py里创建模型类
 ```python
@@ -355,9 +354,9 @@ class NewsModel(Document):
 	# 指明连接的数据表名
 	meta = {'collection': 'table name'}
 
+```
 ### models配置
 ![models](https://github.com/DeerKing007/Data-Base_Notes/blob/master/MongoDB/mongodb_pic/models.png)
-```
 
 
 #### 在views.py里实现增删改查
@@ -411,12 +410,12 @@ class CreateView():
 
         NewsModel.objects.filter(id=id).delete()
 
-        return Response({'msg': 'ok'})
-
-### views配置
-![views](https://github.com/DeerKing007/Data-Base_Notes/blob/master/MongoDB/mongodb_pic/views.png)	
+        return Response({'msg': 'ok'})	
 
 ```
+### views配置
+![views](https://github.com/DeerKing007/Data-Base_Notes/blob/master/MongoDB/mongodb_pic/views.png)
+
 
 #### 去重命令：
 
