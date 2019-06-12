@@ -332,8 +332,9 @@ from mongoengine import connect
 connect('database name',
         host='127.0.0.1',
         port=27017
-        # username='',
-        # password=''
+        username='',
+        password='',
+	authentication_source = 'admin'
         )
 	
 ```
