@@ -16,7 +16,7 @@
 	总之，是一个相当牛逼的搜索引擎，维基百科、Stack Overflow、GitHub 都纷纷采用它来做搜索。
  ```
 
-###Elasticsearch 的安装
+### Elasticsearch 的安装
 
 ```markdown
 	我们可以到 Elasticsearch 的官方网站下载 Elasticsearch：https://www.elastic.co/downloads/elasticsearch，同时官网也附有安装说明。
@@ -62,39 +62,39 @@ brew install elasticsearch
 ### Node 和 Cluster
 
 ```markdown
-		Elasticsearch 本质上是一个分布式数据库，允许多台服务器协同工作，每台服务器可以运行多个 Elasticsearch 实例。
+	Elasticsearch 本质上是一个分布式数据库，允许多台服务器协同工作，每台服务器可以运行多个 Elasticsearch 实例。
 
-		单个 Elasticsearch 实例称为一个节点（Node）。一组节点构成一个集群（Cluster）。
+	单个 Elasticsearch 实例称为一个节点（Node）。一组节点构成一个集群（Cluster）。
 ```
 
 ### Index
 
 ```markdown
-		Elasticsearch 会索引所有字段，经过处理后写入一个反向索引（Inverted Index）。查找数据的时候，直接查找该索引。
-		所以，Elasticsearch 数据管理的顶层单位就叫做 Index（索引），其实就相当于 MySQL、MongoDB 等里面的数据库的概念。另外值得注意的是，每个 Index （即数据库）的名字必须是小写。
+	Elasticsearch 会索引所有字段，经过处理后写入一个反向索引（Inverted Index）。查找数据的时候，直接查找该索引。
+	所以，Elasticsearch 数据管理的顶层单位就叫做 Index（索引），其实就相当于 MySQL、MongoDB 等里面的数据库的概念。另外值得注意的是，每个 Index （即数据库）的名字必须是小写。
 ```
 
 ### Document
 
 ```markdown
-		Index 里面单条的记录称为 Document（文档）。许多条 Document 构成了一个 Index。
-		Document 使用 JSON 格式表示，下面是一个例子。
-		同一个 Index 里面的 Document，不要求有相同的结构（scheme），但是最好保持相同，这样有利于提高搜索效率。
+	Index 里面单条的记录称为 Document（文档）。许多条 Document 构成了一个 Index。
+	Document 使用 JSON 格式表示，下面是一个例子。
+	同一个 Index 里面的 Document，不要求有相同的结构（scheme），但是最好保持相同，这样有利于提高搜索效率。
 ```
 
 ### Type
 
 ```markdown
-		Document 可以分组，比如 weather 这个 Index 里面，可以按城市分组（北京和上海），也可以按气候分组（晴天和雨天）。这种分组就叫做 Type，它是虚拟的逻辑分组，用来过滤 Document，类似 MySQL 中的数据表，MongoDB 中的 Collection。
-		不同的 Type 应该有相似的结构（Schema），举例来说，id 字段不能在这个组是字符串，在另一个组是数值。这是与关系型数据库的表的一个区别。性质完全不同的数据（比如 products 和 logs）应该存成两个 Index，而不是一个 Index 里面的两个 Type（虽然可以做到）。
-		根据规划，Elastic 6.x 版只允许每个 Index 包含一个 Type，7.x 版将会彻底移除 Type。
+	Document 可以分组，比如 weather 这个 Index 里面，可以按城市分组（北京和上海），也可以按气候分组（晴天和雨天）。这种分组就叫做 Type，它是虚拟的逻辑分组，用来过滤 Document，类似 MySQL 中的数据表，MongoDB 中的 Collection。
+	不同的 Type 应该有相似的结构（Schema），举例来说，id 字段不能在这个组是字符串，在另一个组是数值。这是与关系型数据库的表的一个区别。性质完全不同的数据（比如 products 和 logs）应该存成两个 Index，而不是一个 Index 里面的两个 Type（虽然可以做到）。
+	根据规划，Elastic 6.x 版只允许每个 Index 包含一个 Type，7.x 版将会彻底移除 Type。
 ```
 
 ### Fields
 
 ```markdown
-		即字段，每个 Document 都类似一个 JSON 结构，它包含了许多字段，每个字段都有其对应的值，多个字段组成了一个 Document，其实就可以类比 MySQL 数据表中的字段。
-		在 Elasticsearch 中，文档归属于一种类型（Type），而这些类型存在于索引（Index）中，我们可以画一些简单的对比图来类比传统关系型数据库：
+	即字段，每个 Document 都类似一个 JSON 结构，它包含了许多字段，每个字段都有其对应的值，多个字段组成了一个 Document，其实就可以类比 MySQL 数据表中的字段。
+	在 Elasticsearch 中，文档归属于一种类型（Type），而这些类型存在于索引（Index）中，我们可以画一些简单的对比图来类比传统关系型数据库：
 ```
 
 ```python
@@ -109,8 +109,8 @@ Elasticsearch -> Indices   -> Types  -> Documents -> Fields
 ## Python 对接 Elasticsearch
 
 ```markdown
-		Elasticsearch 实际上提供了一系列 Restful API 来进行存取和查询操作，我们可以使用 curl 等命令来进行操作，但毕竟命令行模式没那么方便，所以这里我们就直接介绍利用 Python 来对接 Elasticsearch 的相关方法，官方文档是：https://elasticsearch-py.readthedocs.io/。
-		Python 中对接 Elasticsearch 使用的就是一个同名的库，安装方式非常简单：
+	Elasticsearch 实际上提供了一系列 Restful API 来进行存取和查询操作，我们可以使用 curl 等命令来进行操作，但毕竟命令行模式没那么方便，所以这里我们就直接介绍利用 Python 来对接 Elasticsearch 的相关方法，官方文档是：https://elasticsearch-py.readthedocs.io/。
+	Python 中对接 Elasticsearch 使用的就是一个同名的库，安装方式非常简单：
 ```
 
 ```python
@@ -259,9 +259,9 @@ print(result)
 ### 查询数据
 
 ```markdown
-		上面的几个操作都是非常简单的操作，普通的数据库如 MongoDB 都是可以完成的，看起来并没有什么了不起的，Elasticsearch 更特殊的地方在于其异常强大的检索功能。
+	上面的几个操作都是非常简单的操作，普通的数据库如 MongoDB 都是可以完成的，看起来并没有什么了不起的，Elasticsearch 更特殊的地方在于其异常强大的检索功能。
 
-		对于中文来说，我们需要安装一个分词插件，这里使用的是 elasticsearch-analysis-ik，GitHub 链接为：https://github.com/medcl/elasticsearch-analysis-ik，这里我们使用 Elasticsearch 的另一个命令行工具 elasticsearch-plugin 来安装，这里安装的版本是 6.2.4，请确保和 Elasticsearch 的版本对应起来，命令如下：
+	对于中文来说，我们需要安装一个分词插件，这里使用的是 elasticsearch-analysis-ik，GitHub 链接为：https://github.com/medcl/elasticsearch-analysis-ik，这里我们使用 Elasticsearch 的另一个命令行工具 elasticsearch-plugin 来安装，这里安装的版本是 6.2.4，请确保和 Elasticsearch 的版本对应起来，命令如下：
 ```
 
 ```python
@@ -296,9 +296,9 @@ print(result)
 ```
 
 ```markdown
-		这里我们先将之前的索引删除了，然后新建了一个索引，然后更新了它的 mapping 信息，mapping 信息中指定了分词的字段，指定了字段的类型 type 为 text，分词器 analyzer 和 搜索分词器 search_analyzer 为 ik_max_word，即使用我们刚才安装的中文分词插件。如果不指定的话则使用默认的英文分词器。
+	这里我们先将之前的索引删除了，然后新建了一个索引，然后更新了它的 mapping 信息，mapping 信息中指定了分词的字段，指定了字段的类型 type 为 text，分词器 analyzer 和 搜索分词器 search_analyzer 为 ik_max_word，即使用我们刚才安装的中文分词插件。如果不指定的话则使用默认的英文分词器。
 	
-		接下来我们插入几条新的数据：
+	接下来我们插入几条新的数据：
 ```
 
 ```python
@@ -330,9 +330,9 @@ for data in datas:
 ```
 
 ```markdown
-		这里我们指定了四条数据，都带有 title、url、date 字段，然后通过 index() 方法将其插入 Elasticsearch 中，索引名称为 news，类型为 politics。
+	这里我们指定了四条数据，都带有 title、url、date 字段，然后通过 index() 方法将其插入 Elasticsearch 中，索引名称为 news，类型为 politics。
 
-		接下来我们根据关键词查询一下相关内容：
+	接下来我们根据关键词查询一下相关内容：
 ```
 
 ```python
@@ -341,7 +341,7 @@ print(result)
 ```
 
 ```markdown
-		可以看到查询出了所有插入的四条数据：
+	可以看到查询出了所有插入的四条数据：
 ```
 
 ```python
@@ -408,9 +408,9 @@ print(result)
 ```
 
 ```markdown
-		可以看到返回结果会出现在 hits 字段里面，然后其中有 total 字段标明了查询的结果条目数，还有 max_score 代表了最大匹配分数。
+	可以看到返回结果会出现在 hits 字段里面，然后其中有 total 字段标明了查询的结果条目数，还有 max_score 代表了最大匹配分数。
 
-		另外我们还可以进行全文检索，这才是体现 Elasticsearch 搜索引擎特性的地方：
+	另外我们还可以进行全文检索，这才是体现 Elasticsearch 搜索引擎特性的地方：
 ```
 
 ```python
@@ -428,7 +428,7 @@ print(json.dumps(result, indent=2, ensure_ascii=False))
 ```
 
 ```markdown
-		这里我们使用 Elasticsearch 支持的 DSL 语句来进行查询，使用 match 指定全文检索，检索的字段是 title，内容是“中国领事馆”，搜索结果如下：
+	这里我们使用 Elasticsearch 支持的 DSL 语句来进行查询，使用 match 指定全文检索，检索的字段是 title，内容是“中国领事馆”，搜索结果如下：
 ```
 
 ```python
@@ -473,10 +473,10 @@ print(json.dumps(result, indent=2, ensure_ascii=False))
 ```
 
 ```markdown
-		这里我们看到匹配的结果有两条，第一条的分数为 2.54，第二条的分数为 0.28，这是因为第一条匹配的数据中含有“中国”和“领事馆”两个词，第二条匹配的数据中不包含“领事馆”，但是包含了“中国”这个词，所以也被检索出来了，但是分数比较低。
+	这里我们看到匹配的结果有两条，第一条的分数为 2.54，第二条的分数为 0.28，这是因为第一条匹配的数据中含有“中国”和“领事馆”两个词，第二条匹配的数据中不包含“领事馆”，但是包含了“中国”这个词，所以也被检索出来了，但是分数比较低。
 
-		因此可以看出，检索时会对对应的字段全文检索，结果还会按照检索关键词的相关性进行排序，这就是一个基本的搜索引擎雏形。
+	因此可以看出，检索时会对对应的字段全文检索，结果还会按照检索关键词的相关性进行排序，这就是一个基本的搜索引擎雏形。
 
-		另外 Elasticsearch 还支持非常多的查询方式，详情可以参考官方文档：https://www.elastic.co/guide/en/elasticsearch/reference/6.3/query-dsl.html
+	另外 Elasticsearch 还支持非常多的查询方式，详情可以参考官方文档：https://www.elastic.co/guide/en/elasticsearch/reference/6.3/query-dsl.html
 ```
 
