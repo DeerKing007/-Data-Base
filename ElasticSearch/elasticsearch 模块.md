@@ -791,7 +791,7 @@ m.update_from_es('my-index', using='qa')
 m.save('my-index', using='prod')
 ```
 
-###常用字段选项：
+### 常用字段选项：
 
 ```python
 multi
@@ -811,7 +811,7 @@ my_analyzer = analyzer('my_analyzer',
 # 在创建依赖于自定义分析器的映射时，索引必须不存在或被关闭。要创建多个DocType定义的映射，您可以使用Index对象
 ```
 
-###DocType
+### DocType
 
 ```python
  # 如果你想在你的文档中创建一个类似于模型的包装，请使用 DocType类：
@@ -860,7 +860,7 @@ class Post(DocType):
         return super().save(** kwargs)
 ```
 
-###文档生命周期 （Document life cycle）
+### 文档生命周期 （Document life cycle）
 
 ```python
 # 在首次使用Post文档类型之前，您需要在Elasticsearch中创建映射。为此，您可以使用Index对象或通过调用init类方法直接创建映射：
@@ -986,7 +986,7 @@ for result in suggestions.title_suggestions:
         print('  %s (%r)' % (option.text, option.payload))
 ```
 
-###class Meta 选项
+### class Meta 选项
 
 ```python
 # class Meta 选项
@@ -1009,7 +1009,7 @@ class Post(DocType):
         dynamic = MetaField('strict')
 ```
 
-###索引(Index)
+### 索引(Index)
 
 ```python
 
